@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline' https://*.staticfile.org; script-src 'self' 'unsafe-inline' 'unsafe-eval'"> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'; style-src cdn.staticfile.org third-party.org; child-src https:"> -->
+    <title>Document</title>
+    <%- include('_partial/head') %>
+</head>
+<body>
+    <%- include('_partial/header') %>
+    这是ejs演示代码
+    <br>    
+    <form action="http://127.0.0.1:3000/upfiles" method="post" enctype="multipart/form-data">
+        文件：<input type="file" name="file" onchange="cfun()" id="fileID"  /><br>
+        <input type="text" name="classifys" id="nameID">
+        <input type="button" onclick="upfile()"  value="上传">
+    </form>
+    <script >
+
+            function cfun(){
+                console.log($("#fileID")[0].files[0])
+            }
+           function upfile(){
+             let formData = new FormData() //初始化时将form Dom对象传入
+                formData.append('file', $("#fileID")[0].files[0]); 
+                formData.append('classify', "sdsd"); 
+               $.ajax({
+                    url: 'http://127.0.0.1:3000/v1.1/api/upfiles',
+                    method: "POST",
+                    async: false,
+                    data: formData,
+                    header:{'Content-Type':'multipart/form-data'},
+                    processData: false,
+                    contentType: false,
+               }).then(function(res){
+                    console.log(res)
+               })
+           }
+         //Static resource management center
+         
+         </script>
+    <%=message%>
+    <%- include('_partial/footer') %>
+</body>
+</html>
